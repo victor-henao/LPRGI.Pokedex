@@ -20,10 +20,10 @@ namespace LPRGI.Pokedex.Model
 
             foreach (var type in Types)
             {
-                types += " " + type.Type.Name;
+                types += type.Type.Name + " ";
             }
 
-            return $"Pokemon id = {Id}, name = {Name}, types = {types}";
+            return $"Informations sur {Name} : id =  {Id}, types = {types}";
         }
     }
 }
