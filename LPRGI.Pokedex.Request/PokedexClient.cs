@@ -7,7 +7,7 @@ namespace LPRGI.Pokedex.Request
 {
     public class PokedexClient : HttpClient
     {
-        private HttpResponseMessage responseMessage;
+        private HttpResponseMessage responseMessage = new HttpResponseMessage();
 
         public async Task<Pokemon> GetPokemonAsync(string pokemonName)
         {

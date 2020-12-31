@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace LPRGI.Pokedex
 {
@@ -8,20 +7,43 @@ namespace LPRGI.Pokedex
         static void Main()
         {
             using var pokedexCient = new Request.PokedexClient();
+            Console.WriteLine(
+                "Bienvenue dans le Pokédex!\n" +
+                "Entrez 'help' pour afficher les commandes");
+
+            var input = string.Empty;
+            bool exit = false;
+
             try
             {
-                string input = string.Empty;
-                Console.WriteLine("Entrez le nom ou le numéro d'un pokémon, 'exit' pour sortir");
-                input = Console.ReadLine();
-                bool isDigitPresent = input.Any(c => char.IsDigit(c));
-                while (!isDigitPresent)
+                do
                 {
-                    //!string.Equals(input,"exit", StringComparison.CurrentCultureIgnoreCase) ||
-
-                    Console.WriteLine(pokedexCient.GetPokemonAsync(input).Result);
                     input = Console.ReadLine();
-                    isDigitPresent = input.Any(c => char.IsDigit(c));
-                }
+
+                    switch (input)
+                    {
+                        case var cmd when input.Equals("help", StringComparison.CurrentCultureIgnoreCase):
+                            Console.WriteLine(
+                                "Commandes :\n" +
+                                ">>> name <nom du Pokémon>");
+                            break;
+
+                        case var cmd when input.StartsWith("name", StringComparison.CurrentCultureIgnoreCase):
+                            var pokemonName = input.Split(' ')[1];
+                            Console.WriteLine(pokedexCient.GetPokemonAsync(pokemonName).Result);
+                            break;
+
+                        case var cmd when input.StartsWith("exit", StringComparison.CurrentCultureIgnoreCase):
+                            exit = true;
+                            break;
+
+                        default:
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.WriteLine("Commande inconnue, entrez 'help' pour plus d'informations");
+                            Console.ResetColor();
+                            break;
+                    }
+                } while (!exit);
             }
             catch (AggregateException e)
             {
