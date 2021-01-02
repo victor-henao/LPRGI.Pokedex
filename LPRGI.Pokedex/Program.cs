@@ -1,15 +1,22 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace LPRGI.Pokedex
 {
     class Program
     {
-        static void Main()
+        static readonly string[] Commands = new string[]
+        {
+            "name",
+            "exit"
+        };
+
+        static async Task Main()
         {
             using var pokedexCient = new Request.PokedexClient();
             Console.WriteLine(
                 "Bienvenue dans le Pokédex!\n" +
-                "Entrez 'help' pour afficher les commandes");
+                "Entrez 'help' pour afficher les commandes\n");
 
             var input = string.Empty;
             bool exit = false;
@@ -18,19 +25,22 @@ namespace LPRGI.Pokedex
             {
                 do
                 {
+                    Console.Write("> ");
                     input = Console.ReadLine();
 
                     switch (input)
                     {
-                        case var cmd when input.Equals("help", StringComparison.CurrentCultureIgnoreCase):
-                            Console.WriteLine(
-                                "Commandes :\n" +
-                                ">>> name <nom du Pokémon>");
+                        case var cmd when input.StartsWith("name", StringComparison.CurrentCultureIgnoreCase):
+                            var pokemonName = cmd.Split(" ")[1];
+                            var pokemon = await pokedexCient.GetPokemonAsync(pokemonName);
+                            Console.WriteLine(pokemon);
                             break;
 
-                        case var cmd when input.StartsWith("name", StringComparison.CurrentCultureIgnoreCase):
-                            var pokemonName = input.Split(' ')[1];
-                            Console.WriteLine(pokedexCient.GetPokemonAsync(pokemonName).Result);
+                        case var cmd when input.StartsWith("help", StringComparison.CurrentCultureIgnoreCase):
+                            Console.WriteLine(
+                                "Commandes :\n" +
+                                "name <nom du Pokémon> - obtient les détails d'un Pokémon à partir de son nom\n" +
+                                "exit                  - sortie du programme");
                             break;
 
                         case var cmd when input.StartsWith("exit", StringComparison.CurrentCultureIgnoreCase):
@@ -41,7 +51,7 @@ namespace LPRGI.Pokedex
                             Console.ForegroundColor = ConsoleColor.DarkRed;
                             Console.WriteLine("Commande inconnue, entrez 'help' pour plus d'informations");
                             Console.ResetColor();
-                            break;
+                            throw new Exception();
                     }
                 } while (!exit);
             }

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LPRGI.Pokedex", "LPRGI.Pokedex\LPRGI.Pokedex.csproj", "{022D294E-44ED-44BA-9850-43DA9039A982}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LPRGI.Pokedex", "LPRGI.Pokedex\LPRGI.Pokedex.csproj", "{022D294E-44ED-44BA-9850-43DA9039A982}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LPRGI.Pokedex.Model", "LPRGI.Pokedex.Model\LPRGI.Pokedex.Model.csproj", "{8034EF50-2F00-4B32-AC2E-1030C615587D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LPRGI.Pokedex.Model", "LPRGI.Pokedex.Model\LPRGI.Pokedex.Model.csproj", "{8034EF50-2F00-4B32-AC2E-1030C615587D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LPRGI.Pokedex.Request", "LPRGI.Pokedex.Request\LPRGI.Pokedex.Request.csproj", "{3CC13676-72A2-4ADE-B08C-5FC875FBEB81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LPRGI.Pokedex.Request", "LPRGI.Pokedex.Request\LPRGI.Pokedex.Request.csproj", "{3CC13676-72A2-4ADE-B08C-5FC875FBEB81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -14,6 +14,9 @@ namespace LPRGI.Pokedex.Model
         [JsonPropertyName("types")]
         public List<PokemonType> Types { get; set; }
 
+        [JsonPropertyName("species")]
+        public PokemonSpecies Species { get; set; }
+
         public override string ToString()
         {
             var types = string.Empty;
@@ -23,7 +26,11 @@ namespace LPRGI.Pokedex.Model
                 types += type.Type.Name + " ";
             }
 
-            return $"Informations sur {Name} : id =  {Id}, types = {types}";
+            return
+                $"Informations sur {Name} :\n" +
+                $"Id    - {Id}\n" +
+                $"Types - {types}\n" +
+                $"Species URL - {Species.Url}";
         }
     }
 }
