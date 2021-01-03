@@ -1,5 +1,6 @@
 ﻿using LPRGI.Pokedex.Model;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -34,12 +35,14 @@ namespace LPRGI.Pokedex.Request
                 var pokemonSpecie = JsonConvert.DeserializeObject<PokemonSpecie>(responseMessage.Content.ReadAsStringAsync().Result);
 
                 // Sélection des commentaires en français
-                var frDescription = pokemonSpecie.FlavorTextEntries.Where((f) => f.Language.Name == "fr");
+                var frFlavorTextEntries = pokemonSpecie.FlavorTextEntries.Where((f) => f.Language.Name == "fr");
+                var frComments = frFlavorTextEntries.Select((flavorTextEntry) => flavorTextEntry.FlavorText);
+                var uniqueDescriptions = new HashSet<string>(frComments);
                 var fullDescription = string.Empty;
 
-                foreach (var item in frDescription)
+                foreach (var item in uniqueDescriptions)
                 {
-                    fullDescription += item.FlavorText + " ";
+                    fullDescription += item + "\n\n";
                 }
 
                 pokemon.Description = fullDescription;

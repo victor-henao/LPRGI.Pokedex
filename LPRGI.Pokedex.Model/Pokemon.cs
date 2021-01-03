@@ -30,8 +30,8 @@ namespace LPRGI.Pokedex.Model
 
             return
                 $"Informations sur {Name} :\n" +
-                $"Id    - {Id}\n" +
-                $"Types - {types}\n" +
+                $"Numéro      - {Id}\n" +
+                $"Type(s)     - {types}\n" +
                 $"Description -\n" +
                 $"  {Description}";
         }
