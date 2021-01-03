@@ -13,46 +13,59 @@ namespace LPRGI.Pokedex.Request
 
         public async Task<Pokemon> GetPokemonAsync(string pokemonName)
         {
-            try
+            // On obtient d'abord les informations simples sur le Pokémon : son id, nom et types
+            responseMessage = await GetAsync("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
+
+            // On vérifie si le nom du Pokémon existe bien
+            switch (responseMessage.EnsureSuccessStatusCode().StatusCode)
             {
-                // On obtient d'abord les informations simples sur le Pokémon : son id, nom et types
-                responseMessage = await GetAsync("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
-
-                // On vérifie si le nom du Pokémon existe bien
-                switch (responseMessage.EnsureSuccessStatusCode().StatusCode)
-                {
-                    case System.Net.HttpStatusCode.NotFound:
-                        throw new UnknownPokemonException("Le nom du Pokémon spécifié est introuvable.");
-                    default:
-                        break;
-                }
-
-                var pokemon = JsonConvert.DeserializeObject<Pokemon>(responseMessage.Content.ReadAsStringAsync().Result);
-
-                // Ensuite on extrait sa descirption
-                responseMessage = await GetAsync(pokemon.Species.Url);
-                responseMessage.EnsureSuccessStatusCode();
-                var pokemonSpecie = JsonConvert.DeserializeObject<PokemonSpecie>(responseMessage.Content.ReadAsStringAsync().Result);
-
-                // Sélection des commentaires en français
-                var frFlavorTextEntries = pokemonSpecie.FlavorTextEntries.Where((f) => f.Language.Name == "fr");
-                var frComments = frFlavorTextEntries.Select((flavorTextEntry) => flavorTextEntry.FlavorText);
-                var uniqueDescriptions = new HashSet<string>(frComments);
-                var fullDescription = string.Empty;
-
-                foreach (var item in uniqueDescriptions)
-                {
-                    fullDescription += item + "\n\n";
-                }
-
-                pokemon.Description = fullDescription;
-
-                return pokemon;
+                case System.Net.HttpStatusCode.NotFound:
+                    throw new UnknownPokemonException("Le nom du Pokémon spécifié est introuvable.");
+                default:
+                    break;
             }
-            catch (HttpRequestException)
+
+            var pokemon = JsonConvert.DeserializeObject<Pokemon>(responseMessage.Content.ReadAsStringAsync().Result);
+
+            // Ensuite on extrait sa descirption
+            responseMessage = await GetAsync(pokemon.Species.Url);
+            responseMessage.EnsureSuccessStatusCode();
+            var pokemonSpecie = JsonConvert.DeserializeObject<PokemonSpecie>(responseMessage.Content.ReadAsStringAsync().Result);
+
+            // Sélection des commentaires en français
+            var frFlavorTextEntries = pokemonSpecie.FlavorTextEntries.Where((f) => f.Language.Name == "fr");
+            var frComments = frFlavorTextEntries.Select((flavorTextEntry) => flavorTextEntry.FlavorText);
+            var fullDescription = string.Empty;
+
+            foreach (var item in frComments)
             {
-                throw;
+                fullDescription += item + "\n\n";
             }
+
+            pokemon.Description = frComments.ElementAt(0);
+
+            // On extrait la chaîne d'évolution
+            responseMessage = await GetAsync(pokemonSpecie.EvolutionChain.Url);
+            responseMessage.EnsureSuccessStatusCode();
+            var evolutionChain = JsonConvert.DeserializeObject<EvolutionChain>(responseMessage.Content.ReadAsStringAsync().Result);
+
+            var evolvesToSpecies = new List<string>();
+            GetSpecies(evolutionChain.Chain.EvolvesTo);
+
+            void GetSpecies(List<EvolutionChain.ChainLink> chainLinks)
+            {
+                if (chainLinks.Count > 0)
+                {
+                    evolvesToSpecies.Add(chainLinks[0].Species.Name);
+                    GetSpecies(chainLinks[0].EvolvesTo);
+                }
+            }
+
+            var speciesJoined = evolvesToSpecies.Count > 0 ? string.Join(", ", evolvesToSpecies) : "aucune chaîne d'évolution";
+
+            pokemon.EvolutionChain = speciesJoined;
+
+            return pokemon;
         }
 
         protected override void Dispose(bool disposing)

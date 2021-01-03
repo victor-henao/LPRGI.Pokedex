@@ -11,6 +11,10 @@ namespace LPRGI.Pokedex
             "exit"
         };
 
+        /// <summary>
+        /// Point d'entrée de l'application.
+        /// </summary>
+        /// <returns></returns>
         static async Task Main()
         {
             using var pokedexCient = new Request.PokedexClient();
@@ -37,10 +41,15 @@ namespace LPRGI.Pokedex
                             break;
 
                         case var cmd when input.StartsWith("help", StringComparison.CurrentCultureIgnoreCase):
-                            Console.WriteLine(
-                                "Commandes :\n" +
-                                "name <nom du Pokémon> - obtient les détails d'un Pokémon à partir de son nom\n" +
-                                "exit                  - sortie du programme");
+                            Console.WriteLine("Commandes :");
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.Write("name <nom du Pokémon>");
+                            Console.ResetColor();
+                            Console.Write(" - obtient les détails d'un Pokémon à partir de son nom\n");
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.Write("exit                 ");
+                            Console.ResetColor();
+                            Console.Write(" - sortie du programme\n");
                             break;
 
                         case var cmd when input.StartsWith("exit", StringComparison.CurrentCultureIgnoreCase):
