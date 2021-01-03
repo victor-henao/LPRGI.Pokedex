@@ -1,6 +1,5 @@
 ﻿using LPRGI.Pokedex.Model;
 using Newtonsoft.Json;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -15,23 +14,26 @@ namespace LPRGI.Pokedex.Request
         {
             try
             {
+                // On obtient d'abord les informations simples sur le Pokémon : son id, nom et types
                 responseMessage = await GetAsync("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
                 responseMessage.EnsureSuccessStatusCode();
-
-                // On obtient les informations simples sur le Pokémon : son id, nom et ses types
                 var pokemon = JsonConvert.DeserializeObject<Pokemon>(responseMessage.Content.ReadAsStringAsync().Result);
 
+                // Ensuite on extrait sa descirption
                 responseMessage = await GetAsync(pokemon.Species.Url);
                 responseMessage.EnsureSuccessStatusCode();
-
-                // Ensuite on extrait sa descirption
                 var pokemonSpecie = JsonConvert.DeserializeObject<PokemonSpecie>(responseMessage.Content.ReadAsStringAsync().Result);
 
+                // Sélection des commentaires en français
                 var frDescription = pokemonSpecie.FlavorTextEntries.Where((f) => f.Language.Name == "fr");
+                var fullDescription = string.Empty;
+
                 foreach (var item in frDescription)
                 {
-                    Debug.WriteLine(item.FlavorText);
+                    fullDescription += item.FlavorText + " ";
                 }
+
+                pokemon.Description = fullDescription;
 
                 return pokemon;
             }

@@ -21,13 +21,13 @@ namespace LPRGI.Pokedex
             var input = string.Empty;
             bool exit = false;
 
-            try
+            do
             {
-                do
-                {
-                    Console.Write("> ");
-                    input = Console.ReadLine();
+                Console.Write("> ");
+                input = Console.ReadLine();
 
+                try
+                {
                     switch (input)
                     {
                         case var cmd when input.StartsWith("name", StringComparison.CurrentCultureIgnoreCase):
@@ -48,17 +48,16 @@ namespace LPRGI.Pokedex
                             break;
 
                         default:
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            Console.WriteLine("Commande inconnue, entrez 'help' pour plus d'informations");
-                            Console.ResetColor();
-                            throw new Exception();
+                            throw new UnknownCommandException("Commande inconnue, entrez 'help' pour plus d'informations");
                     }
-                } while (!exit);
-            }
-            catch (AggregateException e)
-            {
-                Console.WriteLine(e.Message);
-            }
+                }
+                catch (UnknownCommandException ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(ex.Message);
+                    Console.ResetColor();
+                }
+            } while (!exit);
         }
     }
 }
