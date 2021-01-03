@@ -9,10 +9,23 @@ namespace LPRGI.Pokedex.Request
 {
     public class PokedexClient : HttpClient
     {
-        private HttpResponseMessage responseMessage = new HttpResponseMessage();
+        private HttpResponseMessage responseMessage;
+        private readonly List<Pokemon> pokemonCache;
+
+        public PokedexClient()
+        {
+            responseMessage = new HttpResponseMessage();
+            pokemonCache = new List<Pokemon>();
+        }
 
         public async Task<Pokemon> GetPokemonAsync(string pokemonName)
         {
+            // Est-ce que le Pokémon recherché est dans le cache ?
+            if (pokemonCache.Any((pokemon) => pokemon.Name == pokemonName))
+            {
+                return pokemonCache.Where((pokemon) => pokemon.Name == pokemonName).First();
+            }
+            
             // On obtient d'abord les informations simples sur le Pokémon : son id, nom et types
             responseMessage = await GetAsync("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
 
@@ -65,6 +78,7 @@ namespace LPRGI.Pokedex.Request
 
             pokemon.EvolutionChain = speciesJoined;
 
+            pokemonCache.Add(pokemon);
             return pokemon;
         }
 
