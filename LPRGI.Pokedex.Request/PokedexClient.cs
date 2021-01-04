@@ -1,7 +1,7 @@
 ﻿using LPRGI.Pokedex.Model;
 using LPRGI.Pokedex.Model.PokemonModel;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -11,12 +11,12 @@ namespace LPRGI.Pokedex.Request
     public class PokedexClient : HttpClient
     {
         private HttpResponseMessage responseMessage;
-        private readonly List<Pokemon> pokemonCache;
+        private readonly MemoryCache memoryCache;
 
         public PokedexClient()
         {
             responseMessage = new HttpResponseMessage();
-            pokemonCache = new List<Pokemon>();
+            memoryCache = new MemoryCache(new MemoryCacheOptions());
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace LPRGI.Pokedex.Request
         public async Task<Pokemon> GetPokemonAsync(string pokemonName)
         {
             // On vérifie si le Pokémon demandé est déjà dans le cache
-            Pokemon pokemonInCache = pokemonCache.Where((pokemon) => pokemon.Name == pokemonName).FirstOrDefault();
+            var pokemonInCache = memoryCache.Get<Pokemon>(pokemonName);
             if (pokemonInCache != null)
             {
                 return pokemonInCache;
@@ -47,19 +47,23 @@ namespace LPRGI.Pokedex.Request
             var evolutionChain = JsonConvert.DeserializeObject<EvolutionChain>(evolutionChainMessageContent);
             pokemon.FormatEvolutionChain(evolutionChain);
 
-            pokemonCache.Add(pokemon);
+            memoryCache.Set(pokemon.Name, pokemon);
             return pokemon;
         }
 
-        public async Task<string> GetPokemonsByTypeAsync(string pokemonType)
+        public async Task<Type> GetPokemonsByTypeAsync(string pokemonType)
         {
+            // On vérifie si le Pokémon demandé est déjà dans le cache
+            //var typeInCache = typeCache.Where((type) => type.Name == pokemonType).FirstOrDefault();
+            //if (typeInCache != null)
+            //{
+            //    return typeInCache;
+            //}
+
             var typeResultsMessageContent = await GetMessageContentAsync("https://pokeapi.co/api/v2/type/" + pokemonType);
             var type = JsonConvert.DeserializeObject<Type>(typeResultsMessageContent);
 
-            var typePokemons = type.Pokemons.Select((pokemon) => pokemon.PokemonResource.Name);
-            var typePokemonsJoined = string.Join(", ", typePokemons);
-
-            return typePokemonsJoined;
+            return type;
         }
 
         /// <summary>

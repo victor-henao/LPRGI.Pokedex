@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LPRGI.Pokedex.Command
@@ -51,7 +52,11 @@ namespace LPRGI.Pokedex.Command
                     case var cmd when command == "type":
                         var type = args[1];
                         var pokemonsByType = await pokedexCient.GetPokemonsByTypeAsync(type);
-                        Console.WriteLine(pokemonsByType);
+
+                        var pokemonNames = pokemonsByType.Pokemons.Select((pokemon) => pokemon.PokemonResource.Name);
+                        var pokemonNamesJoined = string.Join(", ", pokemonNames);
+
+                        Console.WriteLine(pokemonNamesJoined);
                         break;
 
                     // Affichage de l'aide
