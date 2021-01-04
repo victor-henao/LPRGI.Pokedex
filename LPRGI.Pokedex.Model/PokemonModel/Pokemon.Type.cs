@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using LPRGI.Pokedex.Model.Base;
+using Newtonsoft.Json;
 
 namespace LPRGI.Pokedex.Model.PokemonModel
 {
@@ -6,14 +7,8 @@ namespace LPRGI.Pokedex.Model.PokemonModel
     {
         public class PokemonType
         {
-            [JsonPropertyName("type")]
-            public Type Type { get; set; }
-        }
-
-        public class Type
-        {
-            [JsonPropertyName("name")]
-            public string Name { get; set; }
+            [JsonProperty("type")]
+            public NamedResource TypeResource { get; set; }
         }
     }
 }

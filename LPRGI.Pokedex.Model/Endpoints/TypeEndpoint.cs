@@ -5,7 +5,7 @@ namespace LPRGI.Pokedex.Model.Endpoints
 {
     public class TypeEndpoint
     {
-        [JsonProperty("name")]
+        [JsonProperty("results")]
         public List<TypeEndpointResult> Results { get; set; }
 
         public class TypeEndpointResult

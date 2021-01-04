@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LPRGI.Pokedex.Model", "LPRG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LPRGI.Pokedex.Request", "LPRGI.Pokedex.Request\LPRGI.Pokedex.Request.csproj", "{3CC13676-72A2-4ADE-B08C-5FC875FBEB81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LPRGI.Pokedex.Tests", "LPRGI.Pokedex.Tests\LPRGI.Pokedex.Tests.csproj", "{D220378E-F691-4099-92FB-AFB5780A6E6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LPRGI.Pokedex.Tests", "LPRGI.Pokedex.Tests\LPRGI.Pokedex.Tests.csproj", "{D220378E-F691-4099-92FB-AFB5780A6E6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LPRGI.Pokedex.Model.Tests", "LPRGI.Pokedex.Model.Tests\LPRGI.Pokedex.Model.Tests.csproj", "{7B2E9F21-11D5-4CB1-82E4-9DB8B88ADA44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LPRGI.Pokedex.Model.Tests", "LPRGI.Pokedex.Model.Tests\LPRGI.Pokedex.Model.Tests.csproj", "{7B2E9F21-11D5-4CB1-82E4-9DB8B88ADA44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LPRGI.Pokedex.Request.Tests", "LPRGI.Pokedex.Request.Tests\LPRGI.Pokedex.Request.Tests.csproj", "{3ECFEF7B-38BD-4F34-9C88-B0C1DEE28918}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LPRGI.Pokedex.Request.Tests", "LPRGI.Pokedex.Request.Tests\LPRGI.Pokedex.Request.Tests.csproj", "{3ECFEF7B-38BD-4F34-9C88-B0C1DEE28918}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

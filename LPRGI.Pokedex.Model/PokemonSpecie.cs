@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LPRGI.Pokedex.Model.Base;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace LPRGI.Pokedex.Model
@@ -9,12 +10,6 @@ namespace LPRGI.Pokedex.Model
         public List<FlavorTextEntry> FlavorTextEntries { get; set; }
 
         [JsonProperty("evolution_chain")]
-        public PokemonSpecieEvolutionChain EvolutionChain { get; set; }
-
-        public class PokemonSpecieEvolutionChain
-        {
-            [JsonProperty("url")]
-            public string Url { get; set; }
-        }
+        public Resource EvolutionChainResource { get; set; }
     }
 }

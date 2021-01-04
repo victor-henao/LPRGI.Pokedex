@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace LPRGI.Pokedex.Command
 {
@@ -8,7 +9,7 @@ namespace LPRGI.Pokedex.Command
         /// Point d'entrée de l'application.
         /// </summary>
         /// <returns></returns>
-        static async void Main()
+        static async Task Main()
         {
             using var pokedexCient = new Request.PokedexClient();
             Console.WriteLine(
@@ -45,6 +46,11 @@ namespace LPRGI.Pokedex.Command
                         var pokemonName = args[1];
                         var pokemon = await pokedexCient.GetPokemonAsync(pokemonName);
                         Console.WriteLine(pokemon);
+                        break;
+
+                    case var cmd when command == "type":
+                        var type = args[1];
+                        var pokemonType = await pokedexCient.GetPokemonsByTypeAsync(type);
                         break;
 
                     // Affichage de l'aide

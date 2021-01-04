@@ -8,6 +8,7 @@ namespace LPRGI.Pokedex.Command
         static readonly string[] Commands = new string[]
         {
             "name",
+            "type",
             "help",
             "exit"
         };

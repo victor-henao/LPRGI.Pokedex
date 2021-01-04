@@ -38,17 +38,25 @@ namespace LPRGI.Pokedex.Request
             var pokemon = JsonConvert.DeserializeObject<Pokemon>(pokemonMessageContent);
 
             // On extrait ensuite sa description
-            var descriptionMessageContent = await GetMessageContentAsync(pokemon.Species.Url);
+            var descriptionMessageContent = await GetMessageContentAsync(pokemon.SpeciesResource.Url);
             var pokemonSpecie = JsonConvert.DeserializeObject<PokemonSpecie>(descriptionMessageContent);
             pokemon.FormatDescription(pokemonSpecie);
 
             // On extrait enfin la chaîne d'évolution
-            var evolutionChainMessageContent = await GetMessageContentAsync(pokemonSpecie.EvolutionChain.Url);
+            var evolutionChainMessageContent = await GetMessageContentAsync(pokemonSpecie.EvolutionChainResource.Url);
             var evolutionChain = JsonConvert.DeserializeObject<EvolutionChain>(evolutionChainMessageContent);
             pokemon.FormatEvolutionChain(evolutionChain);
 
             pokemonCache.Add(pokemon);
             return pokemon;
+        }
+
+        public async Task<List<Pokemon>> GetPokemonsByTypeAsync(string pokemonType)
+        {
+            var typeResultsMessageContent = await GetMessageContentAsync("https://pokeapi.co/api/v2/type/" + pokemonType);
+            var type = JsonConvert.DeserializeObject<Type>(typeResultsMessageContent);
+
+            return new List<Pokemon>();
         }
 
         /// <summary>
@@ -61,13 +69,6 @@ namespace LPRGI.Pokedex.Request
             responseMessage = await GetAsync(url);
             responseMessage.EnsureSuccessStatusCode();
             return await responseMessage.Content.ReadAsStringAsync();
-        }
-
-        public async Task<List<Pokemon>> GetPokemonsByTypeAsync(string type)
-        {
-
-
-            return new List<Pokemon>();
         }
 
         protected override void Dispose(bool disposing)

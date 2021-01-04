@@ -1,22 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using LPRGI.Pokedex.Model.Base;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 
 namespace LPRGI.Pokedex.Model.PokemonModel
 {
     public partial class Pokemon
     {
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public int Id { get; set; }
 
-        [JsonPropertyName("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("types")]
+        [JsonProperty("types")]
         public List<PokemonType> Types { get; set; }
 
-        [JsonPropertyName("species")]
-        public PokemonSpecies Species { get; set; }
+        [JsonProperty("species")]
+        public NamedResource SpeciesResource { get; set; }
 
         public string Description { get; set; }
 
@@ -30,13 +31,8 @@ namespace LPRGI.Pokedex.Model.PokemonModel
         {
             var frFlavorTextEntries = pokemonSpecie.FlavorTextEntries.Where((f) => f.Language.Name == "fr");
             var frComments = frFlavorTextEntries.Select((flavorTextEntry) => flavorTextEntry.FlavorText);
-            var fullDescription = string.Empty;
 
-            //foreach (var item in frComments)
-            //{
-            //    fullDescription += item + "\n\n";
-            //}
-
+            // On prend la première description
             Description = frComments.ElementAt(0);
         }
 
@@ -54,7 +50,7 @@ namespace LPRGI.Pokedex.Model.PokemonModel
             {
                 if (chainLinks.Count > 0)
                 {
-                    evolvesToSpecies.Add(chainLinks[0].Species.Name);
+                    evolvesToSpecies.Add(chainLinks[0].SpeciesResource.Name);
                     GetSpecies(chainLinks[0].EvolvesTo);
                 }
             }
@@ -67,7 +63,7 @@ namespace LPRGI.Pokedex.Model.PokemonModel
         public override string ToString()
         {
             // Concaténation des noms des types
-            var typesToString = string.Join(", ", Types.Select((t) => t.Type.Name));
+            var typesToString = string.Join(", ", Types.Select((t) => t.TypeResource.Name));
 
             return
                 $"Informations sur {Name} :           \n" +

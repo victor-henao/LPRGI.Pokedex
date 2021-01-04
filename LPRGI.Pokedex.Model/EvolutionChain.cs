@@ -1,4 +1,4 @@
-﻿using LPRGI.Pokedex.Model.PokemonModel;
+﻿using LPRGI.Pokedex.Model.Base;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
@@ -15,7 +15,7 @@ namespace LPRGI.Pokedex.Model
             public List<ChainLink> EvolvesTo { get; set; }
 
             [JsonProperty("species")]
-            public Pokemon.PokemonSpecies Species { get; set; }
+            public NamedResource SpeciesResource { get; set; }
         }
     }
 }

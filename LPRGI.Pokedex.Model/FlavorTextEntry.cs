@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LPRGI.Pokedex.Model.Base;
+using Newtonsoft.Json;
 
 namespace LPRGI.Pokedex.Model
 {
@@ -8,12 +9,6 @@ namespace LPRGI.Pokedex.Model
         public string FlavorText { get; set; }
 
         [JsonProperty("language")]
-        public FlavorTextEntryLanguage Language { get; set; }
-
-        public class FlavorTextEntryLanguage
-        {
-            [JsonProperty("name")]
-            public string Name { get; set; }
-        }
+        public NamedResource Language { get; set; }
     }
 }
