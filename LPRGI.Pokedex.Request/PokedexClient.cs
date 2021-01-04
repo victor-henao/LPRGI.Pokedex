@@ -19,12 +19,18 @@ namespace LPRGI.Pokedex.Request
             pokemonCache = new List<Pokemon>();
         }
 
+        /// <summary>
+        /// Recherche un <see cref="Pokemon"/> à partir de son nom.
+        /// </summary>
+        /// <param name="pokemonName"></param>
+        /// <returns></returns>
         public async Task<Pokemon> GetPokemonAsync(string pokemonName)
         {
             // Est-ce que le Pokémon recherché est dans le cache ?
-            if (pokemonCache.Any((pokemon) => pokemon.Name == pokemonName))
+            Pokemon pokemonInCache = pokemonCache.Where((pokemon) => pokemon.Name == pokemonName).FirstOrDefault();
+            if (pokemonInCache != null)
             {
-                return pokemonCache.Where((pokemon) => pokemon.Name == pokemonName).First();
+                return pokemonInCache;
             }
 
             // On obtient d'abord les informations simples sur le Pokémon : son id, nom et types
@@ -55,6 +61,13 @@ namespace LPRGI.Pokedex.Request
 
             pokemonCache.Add(pokemon);
             return pokemon;
+        }
+
+        public async Task<List<Pokemon>> GetPokemonsByTypeAsync(string type)
+        {
+
+
+            return new List<Pokemon>();
         }
 
         protected override void Dispose(bool disposing)
