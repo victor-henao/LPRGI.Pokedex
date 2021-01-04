@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace LPRGI.Pokedex.Command
 {
@@ -9,7 +8,7 @@ namespace LPRGI.Pokedex.Command
         /// Point d'entrée de l'application.
         /// </summary>
         /// <returns></returns>
-        static async Task Main()
+        static async void Main()
         {
             using var pokedexCient = new Request.PokedexClient();
             Console.WriteLine(
@@ -17,13 +16,27 @@ namespace LPRGI.Pokedex.Command
                 "Entrez 'help' pour afficher les commandes\n");
 
             var input = string.Empty;
+            var command = string.Empty;
+            var args = Array.Empty<string>();
+
             bool exit = false;
 
             do
             {
                 Console.Write("> ");
-                var args = Console.ReadLine().Parse();
-                var command = args[0];
+
+                try
+                {
+                    args = Console.ReadLine().Parse();
+                    command = args[0];
+                }
+                catch (UnknownCommandException ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(ex.Message);
+                    Console.ResetColor();
+                    command = string.Empty;
+                }
 
                 switch (command)
                 {

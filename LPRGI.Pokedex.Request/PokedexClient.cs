@@ -26,41 +26,41 @@ namespace LPRGI.Pokedex.Request
         /// <returns></returns>
         public async Task<Pokemon> GetPokemonAsync(string pokemonName)
         {
-            // Est-ce que le Pokémon recherché est dans le cache ?
+            // On vérifie si le Pokémon demandé est déjà dans le cache
             Pokemon pokemonInCache = pokemonCache.Where((pokemon) => pokemon.Name == pokemonName).FirstOrDefault();
             if (pokemonInCache != null)
             {
                 return pokemonInCache;
             }
 
-            // On obtient d'abord les informations simples sur le Pokémon : son id, nom et types
-            responseMessage = await GetAsync("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
+            // On obtient d'abord le numéro du Pokémon, son nom et son ou ses type(s)
+            var pokemonMessageContent = await GetMessageContentAsync("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
+            var pokemon = JsonConvert.DeserializeObject<Pokemon>(pokemonMessageContent);
 
-            // On vérifie si le nom du Pokémon existe bien
-            switch (responseMessage.EnsureSuccessStatusCode().StatusCode)
-            {
-                case System.Net.HttpStatusCode.NotFound:
-                    throw new UnknownPokemonException("Le nom du Pokémon spécifié est introuvable.");
-                default:
-                    break;
-            }
-
-            var pokemon = JsonConvert.DeserializeObject<Pokemon>(responseMessage.Content.ReadAsStringAsync().Result);
-
-            // Ensuite on extrait sa descirption
-            responseMessage = await GetAsync(pokemon.Species.Url);
-            responseMessage.EnsureSuccessStatusCode();
-            var pokemonSpecie = JsonConvert.DeserializeObject<PokemonSpecie>(responseMessage.Content.ReadAsStringAsync().Result);
+            // On extrait ensuite sa description
+            var descriptionMessageContent = await GetMessageContentAsync(pokemon.Species.Url);
+            var pokemonSpecie = JsonConvert.DeserializeObject<PokemonSpecie>(descriptionMessageContent);
             pokemon.FormatDescription(pokemonSpecie);
 
-            // On extrait la chaîne d'évolution
-            responseMessage = await GetAsync(pokemonSpecie.EvolutionChain.Url);
-            responseMessage.EnsureSuccessStatusCode();
-            var evolutionChain = JsonConvert.DeserializeObject<EvolutionChain>(responseMessage.Content.ReadAsStringAsync().Result);
+            // On extrait enfin la chaîne d'évolution
+            var evolutionChainMessageContent = await GetMessageContentAsync(pokemonSpecie.EvolutionChain.Url);
+            var evolutionChain = JsonConvert.DeserializeObject<EvolutionChain>(evolutionChainMessageContent);
             pokemon.FormatEvolutionChain(evolutionChain);
 
             pokemonCache.Add(pokemon);
             return pokemon;
+        }
+
+        /// <summary>
+        /// Obtient la représentaion JSON d'une ressource à partir de son URL.
+        /// </summary>
+        /// <param name="url">L'URL de la ressource.</param>
+        /// <returns>Une tâche contenant la représentaion JSON comme résultat.</returns>
+        private async Task<string> GetMessageContentAsync(string url)
+        {
+            responseMessage = await GetAsync(url);
+            responseMessage.EnsureSuccessStatusCode();
+            return await responseMessage.Content.ReadAsStringAsync();
         }
 
         public async Task<List<Pokemon>> GetPokemonsByTypeAsync(string type)
