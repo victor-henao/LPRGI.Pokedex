@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LPRGI.Pokedex.Request;
+using System;
 using System.Linq;
 
 namespace LPRGI.Pokedex.Command
@@ -29,6 +30,60 @@ namespace LPRGI.Pokedex.Command
             return Commands.Contains(command, StringComparer.CurrentCultureIgnoreCase) ?
                 Array.ConvertAll(args, (item) => item.ToLower()) : throw new UnknownCommandException(
                     "Commande inconnue, entrez 'help' pour plus d'informations");
+        }
+
+        public static async System.Threading.Tasks.Task RequestAsync(this string[] args, PokedexClient pokedexClient)
+        {
+            var command = args[0];
+
+            switch (command)
+            {
+                // Recherche d'un Pokémon par son nom
+                case var cmd when command == "name":
+                    var pokemonName = args[1];
+                    var pokemon = await pokedexClient.GetPokemonAsync(pokemonName);
+                    Console.WriteLine(pokemon);
+                    break;
+
+                // Recherche de Pokémons avec un type
+                case var cmd when command == "type":
+                    var type = args[1];
+                    var pokemonsByType = await pokedexClient.GetPokemonsByTypeAsync(type);
+
+                    var pokemonNames = pokemonsByType.Pokemons.Select((pokemon) => pokemon.PokemonResource.Name);
+                    var pokemonNamesJoined = string.Join(", ", pokemonNames);
+
+                    Console.WriteLine(pokemonNamesJoined);
+                    break;
+
+                // Affichage de l'aide
+                case var cmd when command == "help":
+                    Console.WriteLine("Commandes :");
+
+                    // Nom
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    Console.Write("name <nom du Pokémon>              ");
+                    Console.ResetColor();
+                    Console.Write(" - obtient les détails d'un Pokémon à partir de son nom\n");
+
+                    // Type
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    Console.Write("type <type de Pokémon (en anglais)>");
+                    Console.ResetColor();
+                    Console.Write(" - obtient une liste de Pokémons ayant ce type\n");
+
+                    // Sortie
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    Console.Write("exit                               ");
+                    Console.ResetColor();
+                    Console.Write(" - sortie du programme\n");
+                    break;
+
+                // Sortie du programme
+                case var cmd when command == "exit":
+                    Program.Exit = true;
+                    break;
+            }
         }
     }
 }

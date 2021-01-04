@@ -11,6 +11,7 @@ namespace LPRGI.Pokedex.Request.Tests
         {
             using var pokedexClient = new PokedexClient();
             await Assert.ThrowsAsync<UnknownPokemonException>(() => pokedexClient.GetPokemonAsync("dito"));
+            await Assert.ThrowsAsync<UnknownPokemonTypeException>(() => pokedexClient.GetPokemonsByTypeAsync("firre"));
         }
     }
 }

@@ -60,12 +60,33 @@ namespace LPRGI.Pokedex.Request
             return pokemon;
         }
 
+        /// <summary>
+        /// Obtient objet qui encapsule une liste de Pokémons appartenant au type recherché.
+        /// </summary>
+        /// <param name="pokemonType"></param>
+        /// <returns></returns>
         public async Task<Type> GetPokemonsByTypeAsync(string pokemonType)
         {
-            var typeResultsMessageContent = await GetMessageContentAsync("https://pokeapi.co/api/v2/type/" + pokemonType);
-            var type = JsonConvert.DeserializeObject<Type>(typeResultsMessageContent);
+            // On vérifie si le type demandé est déjà dans le cache
+            var typeInCache = memoryCache.Get<Type>(pokemonType);
+            if (typeInCache != null)
+            {
+                return typeInCache;
+            }
 
-            return type;
+            string typeResultsMessageContent;
+            try
+            {
+                typeResultsMessageContent = await GetMessageContentAsync("https://pokeapi.co/api/v2/type/" + pokemonType);
+                var type = JsonConvert.DeserializeObject<Type>(typeResultsMessageContent);
+
+                memoryCache.Set(type.Name, type);
+                return type;
+            }
+            catch (HttpRequestException)
+            {
+                throw new UnknownPokemonTypeException("Le type Pokémon demandé est introuvable.");
+            }
         }
 
         /// <summary>
