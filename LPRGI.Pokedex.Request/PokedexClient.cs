@@ -2,7 +2,6 @@
 using LPRGI.Pokedex.Model.PokemonModel;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -34,7 +33,17 @@ namespace LPRGI.Pokedex.Request
             }
 
             // On obtient d'abord le numéro du Pokémon, son nom et son ou ses type(s)
-            var pokemonMessageContent = await GetMessageContentAsync("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
+            string pokemonMessageContent;
+
+            try
+            {
+                pokemonMessageContent = await GetMessageContentAsync("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
+            }
+            catch (HttpRequestException)
+            {
+                throw new UnknownPokemonException("Le Pokémon demandé est introuvable.");
+            }
+
             var pokemon = JsonConvert.DeserializeObject<Pokemon>(pokemonMessageContent);
 
             // On extrait ensuite sa description
@@ -83,6 +92,7 @@ namespace LPRGI.Pokedex.Request
             if (disposing)
             {
                 responseMessage.Dispose();
+                memoryCache.Dispose();
             }
 
             base.Dispose(disposing);

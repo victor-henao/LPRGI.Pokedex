@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LPRGI.Pokedex.Model
+namespace LPRGI.Pokedex.Request
 {
     public class UnknownPokemonException : Exception
     {

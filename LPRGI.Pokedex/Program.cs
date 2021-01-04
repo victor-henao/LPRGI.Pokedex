@@ -49,6 +49,7 @@ namespace LPRGI.Pokedex.Command
                         Console.WriteLine(pokemon);
                         break;
 
+                    // Recherche de Pokémons avec un type
                     case var cmd when command == "type":
                         var type = args[1];
                         var pokemonsByType = await pokedexCient.GetPokemonsByTypeAsync(type);
@@ -65,7 +66,7 @@ namespace LPRGI.Pokedex.Command
 
                         // Name
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
-                        Console.Write("name <nom du Pokémon>");
+                        Console.Write("name <nom du Pokémon>              ");
                         Console.ResetColor();
                         Console.Write(" - obtient les détails d'un Pokémon à partir de son nom\n");
 
