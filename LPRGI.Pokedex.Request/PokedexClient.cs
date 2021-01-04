@@ -51,12 +51,15 @@ namespace LPRGI.Pokedex.Request
             return pokemon;
         }
 
-        public async Task<List<Pokemon>> GetPokemonsByTypeAsync(string pokemonType)
+        public async Task<string> GetPokemonsByTypeAsync(string pokemonType)
         {
             var typeResultsMessageContent = await GetMessageContentAsync("https://pokeapi.co/api/v2/type/" + pokemonType);
             var type = JsonConvert.DeserializeObject<Type>(typeResultsMessageContent);
 
-            return new List<Pokemon>();
+            var typePokemons = type.Pokemons.Select((pokemon) => pokemon.PokemonResource.Name);
+            var typePokemonsJoined = string.Join(", ", typePokemons);
+
+            return typePokemonsJoined;
         }
 
         /// <summary>

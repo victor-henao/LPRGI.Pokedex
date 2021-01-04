@@ -50,18 +50,29 @@ namespace LPRGI.Pokedex.Command
 
                     case var cmd when command == "type":
                         var type = args[1];
-                        var pokemonType = await pokedexCient.GetPokemonsByTypeAsync(type);
+                        var pokemonsByType = await pokedexCient.GetPokemonsByTypeAsync(type);
+                        Console.WriteLine(pokemonsByType);
                         break;
 
                     // Affichage de l'aide
                     case var cmd when command == "help":
                         Console.WriteLine("Commandes :");
+
+                        // Name
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                         Console.Write("name <nom du Pokémon>");
                         Console.ResetColor();
                         Console.Write(" - obtient les détails d'un Pokémon à partir de son nom\n");
+
+                        // Type
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
-                        Console.Write("exit                 ");
+                        Console.Write("type <type de Pokémon (en anglais)>");
+                        Console.ResetColor();
+                        Console.Write(" - obtient une liste de Pokémons ayant ce type\n");
+
+                        // Exit
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.Write("exit                               ");
                         Console.ResetColor();
                         Console.Write(" - sortie du programme\n");
                         break;
