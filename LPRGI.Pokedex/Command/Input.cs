@@ -23,7 +23,9 @@ namespace LPRGI.Pokedex.Command
             var args = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             var command = args[0];
 
-            return Commands.Contains(command, StringComparer.CurrentCultureIgnoreCase) ? args : throw new UnknownCommandException("Commande inconnue, entrez 'help' pour plus d'informations");
+            // Une commande qui est écrite en majuscules est quand même valide
+            // Dans ce cas, on préfère la convertir en minuscules
+            return Commands.Contains(command, StringComparer.CurrentCultureIgnoreCase) ? Array.ConvertAll(args, (item) => item.ToLower()) : throw new UnknownCommandException("Commande inconnue, entrez 'help' pour plus d'informations");
         }
     }
 }

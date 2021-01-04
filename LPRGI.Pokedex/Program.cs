@@ -28,14 +28,14 @@ namespace LPRGI.Pokedex.Command
                 switch (command)
                 {
                     // Recherche d'un Pokémon par son nom
-                    case var cmd when command.Equals("name", StringComparison.CurrentCultureIgnoreCase):
+                    case var cmd when command == "name":
                         var pokemonName = args[1];
                         var pokemon = await pokedexCient.GetPokemonAsync(pokemonName);
                         Console.WriteLine(pokemon);
                         break;
 
                     // Affichage de l'aide
-                    case var cmd when command.Equals("help", StringComparison.CurrentCultureIgnoreCase):
+                    case var cmd when command == "help":
                         Console.WriteLine("Commandes :");
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                         Console.Write("name <nom du Pokémon>");
@@ -48,7 +48,7 @@ namespace LPRGI.Pokedex.Command
                         break;
 
                     // Sortie du programme
-                    case var cmd when command.Equals("exit", StringComparison.CurrentCultureIgnoreCase):
+                    case var cmd when command == "exit":
                         exit = true;
                         break;
                 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LPRGI.Pokedex.Model.PokemonModel;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace LPRGI.Pokedex.Model

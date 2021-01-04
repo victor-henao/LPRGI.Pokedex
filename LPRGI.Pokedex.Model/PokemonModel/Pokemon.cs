@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.Json.Serialization;
 
-namespace LPRGI.Pokedex.Model
+namespace LPRGI.Pokedex.Model.PokemonModel
 {
     public partial class Pokemon
     {

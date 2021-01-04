@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace LPRGI.Pokedex.Model
+namespace LPRGI.Pokedex.Model.PokemonModel
 {
     partial class Pokemon
     {

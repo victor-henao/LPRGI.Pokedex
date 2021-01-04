@@ -1,4 +1,5 @@
 ﻿using LPRGI.Pokedex.Model;
+using LPRGI.Pokedex.Model.PokemonModel;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
