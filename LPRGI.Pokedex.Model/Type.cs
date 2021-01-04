@@ -7,6 +7,12 @@ namespace LPRGI.Pokedex.Model
     public class Type
     {
         [JsonProperty("pokemon")]
-        public List<NamedResource> ResultsResource { get; set; }
+        public List<TypePokemon> Pokemons { get; set; }
+
+        public class TypePokemon
+        {
+            [JsonProperty("pokemon")]
+            public NamedResource PokemonResource { get; set; }
+        }
     }
 }
