@@ -1,6 +1,7 @@
 ﻿using LPRGI.Pokedex.Request;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LPRGI.Pokedex.Command
 {
@@ -32,7 +33,13 @@ namespace LPRGI.Pokedex.Command
                     "Commande inconnue, entrez 'help' pour plus d'informations");
         }
 
-        public static async System.Threading.Tasks.Task RequestAsync(this string[] args, PokedexClient pokedexClient)
+        /// <summary>
+        /// Envoie une requête vers L'API à partir d'arguments.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="pokedexClient"></param>
+        /// <returns></returns>
+        public static async Task RequestAsync(this string[] args, PokedexClient pokedexClient)
         {
             var command = args[0];
 

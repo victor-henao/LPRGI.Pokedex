@@ -44,7 +44,10 @@ namespace LPRGI.Pokedex.Command
                 // Requête vers L'API
                 try
                 {
-                    await args.RequestAsync(pokedexClient);
+                    if (!(command == string.Empty))
+                    {
+                        await args.RequestAsync(pokedexClient);
+                    }
                 }
                 catch (UnknownPokemonException ex1)
                 {

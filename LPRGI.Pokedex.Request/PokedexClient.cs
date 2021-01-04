@@ -61,7 +61,7 @@ namespace LPRGI.Pokedex.Request
         }
 
         /// <summary>
-        /// Obtient objet qui encapsule une liste de Pokémons appartenant au type recherché.
+        /// Obtient un objet qui encapsule une liste de Pokémons appartenant au type recherché.
         /// </summary>
         /// <param name="pokemonType"></param>
         /// <returns></returns>
@@ -93,7 +93,7 @@ namespace LPRGI.Pokedex.Request
         /// Obtient la représentation JSON d'une ressource à partir de son URL.
         /// </summary>
         /// <param name="url">L'URL de la ressource.</param>
-        /// <returns>Une tâche contenant la représentation JSON comme résultat.</returns>
+        /// <returns></returns>
         private async Task<string> GetMessageContentAsync(string url)
         {
             responseMessage = await GetAsync(url);
