@@ -1,16 +1,11 @@
-﻿using System;
+﻿using LPRGI.Pokedex.Command;
+using System;
 using System.Threading.Tasks;
 
-namespace LPRGI.Pokedex
+namespace LPRGI.Pokedex.Command
 {
-    class Program
+    static class Program
     {
-        static readonly string[] Commands = new string[]
-        {
-            "name",
-            "exit"
-        };
-
         /// <summary>
         /// Point d'entrée de l'application.
         /// </summary>
@@ -28,43 +23,35 @@ namespace LPRGI.Pokedex
             do
             {
                 Console.Write("> ");
-                input = Console.ReadLine();
+                var args = Console.ReadLine().Parse();
+                var command = args[0];
 
-                try
+                switch (command)
                 {
-                    switch (input)
-                    {
-                        case var cmd when input.StartsWith("name", StringComparison.CurrentCultureIgnoreCase):
-                            var pokemonName = cmd.Split(" ")[1];
-                            var pokemon = await pokedexCient.GetPokemonAsync(pokemonName);
-                            Console.WriteLine(pokemon);
-                            break;
+                    // Recherche d'un Pokémon par son nom
+                    case var cmd when command.Equals("name", StringComparison.CurrentCultureIgnoreCase):
+                        var pokemonName = args[1];
+                        var pokemon = await pokedexCient.GetPokemonAsync(pokemonName);
+                        Console.WriteLine(pokemon);
+                        break;
 
-                        case var cmd when input.StartsWith("help", StringComparison.CurrentCultureIgnoreCase):
-                            Console.WriteLine("Commandes :");
-                            Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.Write("name <nom du Pokémon>");
-                            Console.ResetColor();
-                            Console.Write(" - obtient les détails d'un Pokémon à partir de son nom\n");
-                            Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.Write("exit                 ");
-                            Console.ResetColor();
-                            Console.Write(" - sortie du programme\n");
-                            break;
+                    // Affichage de l'aide
+                    case var cmd when command.Equals("help", StringComparison.CurrentCultureIgnoreCase):
+                        Console.WriteLine("Commandes :");
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.Write("name <nom du Pokémon>");
+                        Console.ResetColor();
+                        Console.Write(" - obtient les détails d'un Pokémon à partir de son nom\n");
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.Write("exit                 ");
+                        Console.ResetColor();
+                        Console.Write(" - sortie du programme\n");
+                        break;
 
-                        case var cmd when input.StartsWith("exit", StringComparison.CurrentCultureIgnoreCase):
-                            exit = true;
-                            break;
-
-                        default:
-                            throw new UnknownCommandException("Commande inconnue, entrez 'help' pour plus d'informations");
-                    }
-                }
-                catch (UnknownCommandException ex)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine(ex.Message);
-                    Console.ResetColor();
+                    // Sortie du programme
+                    case var cmd when command.Equals("exit", StringComparison.CurrentCultureIgnoreCase):
+                        exit = true;
+                        break;
                 }
             } while (!exit);
         }

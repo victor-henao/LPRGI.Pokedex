@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LPRGI.Pokedex
+namespace LPRGI.Pokedex.Command
 {
     /// <summary>
     /// Exception levée quand l'utilisateur tape une commande inconnue.

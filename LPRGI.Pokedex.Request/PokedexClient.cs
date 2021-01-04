@@ -25,7 +25,7 @@ namespace LPRGI.Pokedex.Request
             {
                 return pokemonCache.Where((pokemon) => pokemon.Name == pokemonName).First();
             }
-            
+
             // On obtient d'abord les informations simples sur le Pokémon : son id, nom et types
             responseMessage = await GetAsync("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
 
