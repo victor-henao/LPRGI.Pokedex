@@ -44,39 +44,13 @@ namespace LPRGI.Pokedex.Request
             responseMessage = await GetAsync(pokemon.Species.Url);
             responseMessage.EnsureSuccessStatusCode();
             var pokemonSpecie = JsonConvert.DeserializeObject<PokemonSpecie>(responseMessage.Content.ReadAsStringAsync().Result);
-
-            // Sélection des commentaires en français
-            var frFlavorTextEntries = pokemonSpecie.FlavorTextEntries.Where((f) => f.Language.Name == "fr");
-            var frComments = frFlavorTextEntries.Select((flavorTextEntry) => flavorTextEntry.FlavorText);
-            var fullDescription = string.Empty;
-
-            foreach (var item in frComments)
-            {
-                fullDescription += item + "\n\n";
-            }
-
-            pokemon.Description = frComments.ElementAt(0);
+            pokemon.FormatDescription(pokemonSpecie);
 
             // On extrait la chaîne d'évolution
             responseMessage = await GetAsync(pokemonSpecie.EvolutionChain.Url);
             responseMessage.EnsureSuccessStatusCode();
             var evolutionChain = JsonConvert.DeserializeObject<EvolutionChain>(responseMessage.Content.ReadAsStringAsync().Result);
-
-            var evolvesToSpecies = new List<string>();
-            GetSpecies(evolutionChain.Chain.EvolvesTo);
-
-            void GetSpecies(List<EvolutionChain.ChainLink> chainLinks)
-            {
-                if (chainLinks.Count > 0)
-                {
-                    evolvesToSpecies.Add(chainLinks[0].Species.Name);
-                    GetSpecies(chainLinks[0].EvolvesTo);
-                }
-            }
-
-            var speciesJoined = evolvesToSpecies.Count > 0 ? string.Join(", ", evolvesToSpecies) : "aucune chaîne d'évolution";
-
-            pokemon.EvolutionChain = speciesJoined;
+            pokemon.FormatEvolutionChain(evolutionChain);
 
             pokemonCache.Add(pokemon);
             return pokemon;

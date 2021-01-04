@@ -1,10 +1,9 @@
-﻿using LPRGI.Pokedex.Command;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace LPRGI.Pokedex.Command
 {
-    static class Program
+    class Program
     {
         /// <summary>
         /// Point d'entrée de l'application.
