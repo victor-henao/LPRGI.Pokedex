@@ -19,7 +19,7 @@ namespace LPRGI.Pokedex.Tests
         {
             Assert.Equal(new string[] { "name", "bulbasaur" }, "name bulbasaur".Parse());
 
-            // Tests avec plusieurs espaces
+            // Test avec plusieurs espaces
             Assert.Equal(new string[] { "name", "ditto" }, "name      ditto".Parse());
         }
 

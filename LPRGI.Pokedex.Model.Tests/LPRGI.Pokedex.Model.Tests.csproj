@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LPRGI.Pokedex.Model\LPRGI.Pokedex.Model.csproj" />
+    <ProjectReference Include="..\LPRGI.Pokedex.Request\LPRGI.Pokedex.Request.csproj" />
   </ItemGroup>
 
 </Project>
