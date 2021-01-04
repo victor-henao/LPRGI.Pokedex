@@ -1,3 +1,4 @@
+using LPRGI.Pokedex.Request.Exceptions;
 using System.Threading.Tasks;
 using Xunit;
 

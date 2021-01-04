@@ -3,7 +3,7 @@
 namespace LPRGI.Pokedex.Model.Base
 {
     /// <summary>
-    /// Objet JSON qui contient un nom et un URL.
+    /// Représentation d'un objet JSON qui contient un nom et un URL.
     /// </summary>
     public class NamedResource : Resource
     {

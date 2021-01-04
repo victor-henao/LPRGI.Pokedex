@@ -1,5 +1,6 @@
 ﻿using LPRGI.Pokedex.Model;
 using LPRGI.Pokedex.Model.PokemonModel;
+using LPRGI.Pokedex.Request.Exceptions;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -34,7 +35,6 @@ namespace LPRGI.Pokedex.Request
 
             // On obtient d'abord le numéro du Pokémon, son nom et son ou ses type(s)
             string pokemonMessageContent;
-
             try
             {
                 pokemonMessageContent = await GetMessageContentAsync("https://pokeapi.co/api/v2/pokemon/" + pokemonName);
@@ -62,13 +62,6 @@ namespace LPRGI.Pokedex.Request
 
         public async Task<Type> GetPokemonsByTypeAsync(string pokemonType)
         {
-            // On vérifie si le Pokémon demandé est déjà dans le cache
-            //var typeInCache = typeCache.Where((type) => type.Name == pokemonType).FirstOrDefault();
-            //if (typeInCache != null)
-            //{
-            //    return typeInCache;
-            //}
-
             var typeResultsMessageContent = await GetMessageContentAsync("https://pokeapi.co/api/v2/type/" + pokemonType);
             var type = JsonConvert.DeserializeObject<Type>(typeResultsMessageContent);
 
@@ -76,10 +69,10 @@ namespace LPRGI.Pokedex.Request
         }
 
         /// <summary>
-        /// Obtient la représentaion JSON d'une ressource à partir de son URL.
+        /// Obtient la représentation JSON d'une ressource à partir de son URL.
         /// </summary>
         /// <param name="url">L'URL de la ressource.</param>
-        /// <returns>Une tâche contenant la représentaion JSON comme résultat.</returns>
+        /// <returns>Une tâche contenant la représentation JSON comme résultat.</returns>
         private async Task<string> GetMessageContentAsync(string url)
         {
             responseMessage = await GetAsync(url);

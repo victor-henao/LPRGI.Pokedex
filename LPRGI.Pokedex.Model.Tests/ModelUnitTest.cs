@@ -7,7 +7,7 @@ namespace LPRGI.Pokedex.Model.Tests
     public class ModelUnitTest
     {
         [Fact]
-        public async Task ModelFormatEvolutionChainTestAsync()
+        public async Task FormatEvolutionChainTestAsync()
         {
             // On s'assure que la chaîne d'évolution est bien formatée
             using var pokedexClient = new PokedexClient();

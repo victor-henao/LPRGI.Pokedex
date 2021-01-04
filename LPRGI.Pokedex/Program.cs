@@ -27,6 +27,7 @@ namespace LPRGI.Pokedex.Command
             {
                 Console.Write("> ");
 
+                // Récupération des arguments
                 try
                 {
                     args = Console.ReadLine().Parse();
@@ -64,7 +65,7 @@ namespace LPRGI.Pokedex.Command
                     case var cmd when command == "help":
                         Console.WriteLine("Commandes :");
 
-                        // Name
+                        // Nom
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                         Console.Write("name <nom du Pokémon>              ");
                         Console.ResetColor();
@@ -76,7 +77,7 @@ namespace LPRGI.Pokedex.Command
                         Console.ResetColor();
                         Console.Write(" - obtient une liste de Pokémons ayant ce type\n");
 
-                        // Exit
+                        // Sortie
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                         Console.Write("exit                               ");
                         Console.ResetColor();
